@@ -17,7 +17,7 @@ public class King extends Piece {
 	private final static int[] CANDIDATE_MOVE_COORD = {-9, -8, -7, -1, 1, 7, 8, 9};
 
 	public King(Alliance pieceAlliance, int piecePosition) {
-		super(piecePosition, pieceAlliance);
+		super(piecePosition, pieceAlliance, PieceType.KING);
 	}
 
 	@Override
@@ -65,4 +65,5 @@ public class King extends Piece {
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == 9 || candidateOffset == 1 || candidateOffset == -7);
 	}
+
 }

@@ -2,7 +2,7 @@ package com.Chess.engine.board;
 
 import com.Chess.engine.pieces.Piece;
 
-public class Move {
+public abstract class Move {
 
 	final Board board;
 	final Piece movedPiece; 
@@ -14,10 +14,22 @@ public class Move {
 		this.destionationCoord = destinationCoord;
 	}
 	
+	public abstract Board execute();
+	
+	public int getDestinationCoord() {
+		return this.destionationCoord;
+	}
+	
 	public static final class MajorMove extends Move{
 
 		public MajorMove(final Board board, final Piece movedPiece, final int destinationCoord) {
 			super(board, movedPiece, destinationCoord);
+		}
+
+		@Override
+		public Board execute() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 	public static final class AttackMove extends Move{
@@ -28,6 +40,11 @@ public class Move {
 			super(board, movedPiece, destinationCoord);
 			this.attackedPiece = attackedPiece;
 		}
+
+		@Override
+		public Board execute() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
-	
 }

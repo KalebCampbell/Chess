@@ -16,6 +16,9 @@ import com.Chess.engine.pieces.Pawn;
 import com.Chess.engine.pieces.Piece;
 import com.Chess.engine.pieces.Queen;
 import com.Chess.engine.pieces.Rook;
+import com.Chess.engine.player.BlackPlayer;
+import com.Chess.engine.player.Player;
+import com.Chess.engine.player.WhitePlayer;
 
 public class Board {
 	
@@ -23,14 +26,19 @@ public class Board {
 	private final Collection<Piece> whitePieces;
 	private final Collection<Piece> blackPieces;
 	
+	private final WhitePlayer whitePlayer;
+	private final BlackPlayer blackPlayer;
+	private final Player currentPlayer;
+	
 	public Board(Builder builder) {
 		this.gameBoard = createGameBoard(builder);
 		this.whitePieces = calculateActivePieces(this.gameBoard, Alliance.WHITE);
 		this.blackPieces = calculateActivePieces(this.gameBoard, Alliance.BLACK);
-		
 		final Collection<Move> whiteStandardLegalMoves = calculateLegalMoves(this.whitePieces);
 		final Collection<Move> blackStandardLegalMoves = calculateLegalMoves(this.blackPieces);
-		
+		this.whitePlayer =  new WhitePlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
+		this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
+		this.currentPlayer = null;
 	}
 	
 	
@@ -46,6 +54,22 @@ public class Board {
 			}
 		}
 		return builder.toString();
+	}
+	
+	public Collection<Piece> getWhitePieces() {
+		return this.blackPieces;
+	}
+	public Collection<Piece> getBlackPieces() {
+		return this.whitePieces;
+	}
+	public Player whitePlayer() {
+		return this.whitePlayer;
+	}
+	public Player blackPlayer() {
+		return this.blackPlayer;
+	}
+	public Player currentPlayer() {
+		return this.currentPlayer;
 	}
 
 	private Collection<Move> calculateLegalMoves(final Collection<Piece> pieceAlliance) {
@@ -133,21 +157,16 @@ public class Board {
 		public Builder() {	
 			this.boardConfig = new HashMap<>();
 		}
-		
 		public Builder setPiece(final Piece piece) {
-			this.boardConfig.put(piece.piecePosition(), piece);
+			this.boardConfig.put(piece.getPiecePosition(), piece);
 			return this;
 		}
-
 		public Builder setMoveMaker(final Alliance alliance) {
 			this.nextMoveMaker = nextMoveMaker;
 			return this;
 		}
-		
 		public Board build(){
 			return new Board(this);
 		}
-		
-		
 	}
 }
